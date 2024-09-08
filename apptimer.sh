@@ -44,7 +44,7 @@ else
     TIME_LIMIT=$DEFAULT_TIME_LIMIT
     WEEKEND_TIME_LIMIT=$DEFAULT_WEEKEND_TIME_LIMIT
     BUFFER_TIME=$DEFAULT_BUFFER_TIME
-    APPS=("Minecraft" "firefox" "chrome" "safari")
+    APPS=("Minecraft" "firefox" "chrome" "safari","roblox","edge")
 fi
 
 # Get the current date
