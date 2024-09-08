@@ -33,11 +33,12 @@ if [ ! -f "$LOG_DIR/$CONFIG_NAME" ]; then
     cat > "$LOG_DIR/$CONFIG_NAME" << EOL
 default:1800
 weekend:3600
-buffer:300
+buffer:900
 Minecraft:1800
-firefox:1800
-chrome:1800
-safari:1800
+firefox:0
+chrome:14400
+safari:0
+roblox:3600
 EOL
 fi
 chown root:wheel "$LOG_DIR/$CONFIG_NAME"
