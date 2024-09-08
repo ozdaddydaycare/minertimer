@@ -1,6 +1,6 @@
 #!/bin/zsh
 ###
-# Script to securely install and configure the minertimer files
+# Script to securely install and configure the apptimer files
 # The script needs to be run from an Administrator account with sudo privileges
 # Copyright OzDaddyDayCare
 ###
@@ -13,10 +13,10 @@ fi
 
 # Define variables
 INSTALL_DIR="/Library/Application Support/OzDaddyDayCare/MinerTimer"
-SCRIPT_NAME="minertimer.sh"
-PLIST_NAME="com.ozdaddydaycare.minertimer_daily_timer.plist"
+SCRIPT_NAME="apptimer.sh"
+PLIST_NAME="com.ozdaddydaycare.apptimer_daily_timer.plist"
 CONFIG_NAME="config.txt"
-LOG_DIR="/var/lib/ozdaddydaycare_minertimer"
+LOG_DIR="/var/lib/ozdaddydaycare_apptimer"
 
 # Step 1: Create necessary directories
 mkdir -p "$INSTALL_DIR"
@@ -50,20 +50,20 @@ chmod 644 "/Library/LaunchDaemons/$PLIST_NAME"
 chflags schg "/Library/LaunchDaemons/$PLIST_NAME"  # Set system immutable flag
 
 # Step 5: Update PLIST file with correct path
-sed -i '' "s|/Users/Shared/minertimer/minertimer.sh|$INSTALL_DIR/$SCRIPT_NAME|g" "/Library/LaunchDaemons/$PLIST_NAME"
+sed -i '' "s|/Users/Shared/apptimer/apptimer.sh|$INSTALL_DIR/$SCRIPT_NAME|g" "/Library/LaunchDaemons/$PLIST_NAME"
 
 # Step 6: Set proper permissions for log directory
 chown root:wheel "$LOG_DIR"
 chmod 755 "$LOG_DIR"
 
-# Step 7: Register the minertimer as a background task
+# Step 7: Register the apptimer as a background task
 launchctl load -w "/Library/LaunchDaemons/$PLIST_NAME"
 
 # Step 8: Post Script report
 echo ""
 echo "MinerTimer has been installed and configured."
 echo "To check if the MinerTimer background process is running, type:"
-echo "sudo launchctl list | grep com.ozdaddydaycare.minertimer_daily_timer"
+echo "sudo launchctl list | grep com.ozdaddydaycare.apptimer_daily_timer"
 echo "If you see a line of text starting with a process number, the script is running."
 echo ""
 echo "The configuration file is located at: $LOG_DIR/$CONFIG_NAME"
