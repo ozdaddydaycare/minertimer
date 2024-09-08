@@ -1,8 +1,4 @@
 #!/bin/zsh
-###
-# Enhanced MINERTIMER script. Manages time limits for multiple apps and browsers on MacOS.
-# Developed and owned by Soferio Pty Limited.
-###
 
 # Configuration file
 CONFIG_FILE="/var/lib/minertimer/config.txt"
