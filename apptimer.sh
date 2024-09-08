@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 # Configuration file
-CONFIG_FILE="/var/lib/minertimer/config.txt"
+CONFIG_FILE="/var/lib/apptimer/config.txt"
 
 # Default time limits in seconds
 DEFAULT_TIME_LIMIT=1800
@@ -9,8 +9,8 @@ DEFAULT_WEEKEND_TIME_LIMIT=3600
 DEFAULT_BUFFER_TIME=300
 
 # Directory and file to store total played time for the day
-LOG_DIRECTORY="/var/lib/minertimer"
-LOG_FILE="${LOG_DIRECTORY}/minertimer_playtime.log"
+LOG_DIRECTORY="/var/lib/apptimer"
+LOG_FILE="${LOG_DIRECTORY}/apptimer_playtime.log"
 
 # Create the directory (don't throw error if already exists)
 mkdir -p $LOG_DIRECTORY
