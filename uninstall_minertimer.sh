@@ -1,35 +1,62 @@
 #!/bin/zsh
-
 ###
-# Script to remove the minertimer files 
-# The script needs to be run from an Administrator account with Administrator privileges using SUDO
-# Copyright Soferio Pty Ltd
+# Script to remove the AppTimer files and configuration
+# The script needs to be run with sudo privileges
+# Copyright OzDaddyDayCare
 ###
 
-# Step 1: Remove Minertime script w
+# Check for sudo privileges
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run with sudo privileges" 
+   exit 1
+fi
 
-rm /Users/Shared/minertimer/minertimer.sh
+# Define variables
+INSTALL_DIR="/Library/Application Support/OzDaddyDayCare/AppTimer"
+PLIST_PATH="/Library/LaunchDaemons/com.ozdaddydaycare.Apptimer_daily_timer.plist"
+LOG_DIR="/var/lib/ozdaddydaycare_Apptimer"
 
-# Step 2: Remove PLIST file 
+# Step 1: Unregister and remove the LaunchDaemon
+if [ -f "$PLIST_PATH" ]; then
+    echo "Unloading and removing LaunchDaemon..."
+    launchctl bootout system/com.ozdaddydaycare.Apptimer_daily_timer
+    rm "$PLIST_PATH"
+else
+    echo "LaunchDaemon PLIST not found. Skipping..."
+fi
 
-rm /Library/LaunchDaemons/com.soferio.minertimer_daily_timer.plist
+# Step 2: Remove AppTimer script and installation directory
+if [ -d "$INSTALL_DIR" ]; then
+    echo "Removing AppTimer installation directory..."
+    rm -rf "$INSTALL_DIR"
+else
+    echo "AppTimer installation directory not found. Skipping..."
+fi
 
-# Step 3: Unregister the minertimer as a background task
+# Step 3: Remove log directory and files
+if [ -d "$LOG_DIR" ]; then
+    echo "Removing AppTimer log directory and files..."
+    rm -rf "$LOG_DIR"
+else
+    echo "AppTimer log directory not found. Skipping..."
+fi
 
-launchctl bootout system/com.soferio.minertimer_daily_timer
+# Step 4: Remove system immutable flags if they exist
+chflags -R noschg "$INSTALL_DIR" "$PLIST_PATH" "$LOG_DIR" 2>/dev/null
 
-# Step 4: Remove log file
-rm /var/lib/minertimer/minertimer_playtime.log
+# Step 5: Final cleanup
+rm -rf "$INSTALL_DIR" "$PLIST_PATH" "$LOG_DIR" 2>/dev/null
 
-# Step 5: Report
+# Step 6: Report
 echo ""
-echo "Script has been run. Assuming there are no errors, to check if the minertimer ackground process is running type the following:"
-echo "sudo launchctl list | grep com.soferio.minertimer_daily_timer"
-echo "If you get nothing, it means the background process is no longer running and minecraft is not limited."
-
-
-
-
-# TO CHECK IF SCRIPT IS RUNNING:
-# sudo launchctl list | grep soferio
-
+echo "Uninstall script has been run."
+echo "To verify that the AppTimer background process is no longer running, type:"
+echo "sudo launchctl list | grep com.ozdaddydaycare.Apptimer_daily_timer"
+echo "If you get no output, it means the background process is no longer running and Minecraft is not limited."
+echo ""
+echo "The following locations have been cleaned:"
+echo "- $INSTALL_DIR"
+echo "- $PLIST_PATH"
+echo "- $LOG_DIR"
+echo ""
+echo "If you see any error messages above, please check those locations manually and remove any remaining files if necessary."
